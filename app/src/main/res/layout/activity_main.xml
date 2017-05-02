@@ -1,10 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:id="@+id/record"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/steps"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#BBDEFB"
+            android:enabled="false"
+            android:text="@string/default_steps_button_text"
+            android:textColor="#212121" />
+
+        <Button
+            android:id="@+id/distances"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="#BBDEFB"
+            android:enabled="false"
+            android:text="@string/default_distances_button_text"
+            android:textColor="#212121" />
+
+        <Button
+            android:id="@+id/direction"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#BBDEFB"
+            android:enabled="false"
+            android:text="@string/default_direction_button_text"
+            android:textColor="#212121" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,80 +54,40 @@
         <ImageView
             android:id="@+id/img_map"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            android:layout_height="match_parent"
+            android:background="#E9E5DC" />
 
-        <TextView
-            android:id="@+id/txt_distance_set"
-            android:layout_width="match_parent"
-            android:layout_height="70dp" />
     </LinearLayout>
 
-    <com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout
-        android:id="@+id/fabtoolbar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:containerId="@+id/fabtoolbar_container"
-        app:fabId="@+id/fabtoolbar_fab"
-        app:fabToolbarId="@+id/fabtoolbar_toolbar"
-        app:fadeInFraction="0.2"
-        app:hideDuration="200"
-        app:horizontalMargin="30dp"
-        app:showDuration="600"
-        app:verticalMargin="30dp">
-
-
-        <RelativeLayout
-            android:id="@+id/fabtoolbar_container"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true">
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fabtoolbar_fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/fab_start"
-                app:backgroundTint="#009487"
-                app:fabSize="normal"
-                app:rippleColor="#009487" />
-
-        </RelativeLayout>
-
-        <LinearLayout
-            android:id="@+id/fabtoolbar_toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="70dp"
-            android:layout_alignParentBottom="true"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/txt_distance"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:text="0 米"
-                android:textSize="22sp" />
-
-            <Button
-                android:id="@+id/btn_stop"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_gravity="center"
-                android:background="@drawable/fab_stop" />
-
-            <TextView
-                android:id="@+id/txt_direction"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:gravity="center"
-                android:textSize="22sp"
-                tools:text="北" />
-
-        </LinearLayout>
-
-    </com.github.fafaldo.fabtoolbar.widget.FABToolbarLayout>
+</LinearLayout>
+    <Button
+         android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:tint="@android:color/white"
+        android:id="@+id/start_button"
+        android:onClick="onClick"
+        android:elevation="1dp"
+        android:background="@drawable/start_button_style"
+        android:visibility="visible"
+        android:text="@string/start_button_text"
+        />
+    <Button
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:tint="@android:color/white"
+        android:id="@+id/stop_button"
+        android:onClick="onClick"
+        android:elevation="1dp"
+        android:background="@drawable/stop_button_style"
+        android:visibility="invisible"
+        android:text="@string/stop_button_text"
+        />
 </RelativeLayout>

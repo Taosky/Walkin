@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                txtSteps.setText( + (int) (distance / 0.67));
+                txtSteps.setText( String.format(Locale.CHINA,"步数:%d",(int) (distance / 0.67)));
                 txtDistance.setText(String.format(Locale.CHINA,"距离:%.2f米",distance));//设置距离
                 txtDirection.setText(String.format(Locale.CHINA,"方向:%s",judgeDirection(direction)));//设置方向
                 paintLine(distance, direction);

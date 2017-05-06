@@ -4,7 +4,7 @@ import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 
-import science.zxc.walkin.Myapplication;
+import static org.litepal.LitePalApplication.getContext;
 
 /**
  * AUTH: Taosky
@@ -37,7 +37,7 @@ public class MyWalk {
 
     public MyWalk() {
         mySensorListener = new MySensorListener();
-        sensorManager = (SensorManager) Myapplication.getContext().getSystemService(Context.SENSOR_SERVICE);
+        sensorManager = (SensorManager) getContext().getSystemService(Context.SENSOR_SERVICE);
         accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         magneticSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         mySensorListener.setUpdateListener(myUpdateListener);

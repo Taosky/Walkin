@@ -1,93 +1,121 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true">
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
-
-
-    <LinearLayout
-        android:id="@+id/record"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/steps"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#BBDEFB"
-            android:enabled="false"
-            android:text="@string/default_steps_button_text"
-            android:textColor="#212121" />
-
-        <Button
-            android:id="@+id/distances"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="#BBDEFB"
-            android:enabled="false"
-            android:text="@string/default_distances_button_text"
-            android:textColor="#212121" />
-
-        <Button
-            android:id="@+id/direction"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="#BBDEFB"
-            android:enabled="false"
-            android:text="@string/default_direction_button_text"
-            android:textColor="#212121" />
-    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/img_map"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/main_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
+            />
+
+
+        <LinearLayout
+            android:id="@+id/record"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/steps"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#BBDEFB"
+                android:enabled="false"
+                android:text="@string/default_steps_button_text"
+                android:textColor="#212121" />
+
+            <Button
+                android:id="@+id/distances"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#BBDEFB"
+                android:enabled="false"
+                android:text="@string/default_distances_button_text"
+                android:textColor="#212121" />
+
+            <Button
+                android:id="@+id/direction"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="#BBDEFB"
+                android:enabled="false"
+                android:text="@string/default_direction_button_text"
+                android:textColor="#212121" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#E9E5DC" />
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/img_map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#E9E5DC" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
-</LinearLayout>
     <Button
-         android:layout_width="56dp"
+        android:id="@+id/start_button"
+        android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginRight="16dp"
         android:layout_marginBottom="16dp"
-        android:tint="@android:color/white"
-        android:id="@+id/start_button"
-        android:onClick="onClick"
-        android:elevation="1dp"
+        android:layout_marginRight="16dp"
         android:background="@drawable/start_button_style"
-        android:visibility="visible"
+        android:elevation="1dp"
+        android:onClick="onClick"
         android:text="@string/start_button_text"
-        />
+        android:tint="@android:color/white"
+        android:visibility="visible" />
+
     <Button
+        android:id="@+id/stop_button"
         android:layout_width="56dp"
         android:layout_height="56dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:tint="@android:color/white"
-        android:id="@+id/stop_button"
-        android:onClick="onClick"
-        android:elevation="1dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/stop_button_style"
-        android:visibility="invisible"
+        android:elevation="1dp"
+        android:onClick="onClick"
         android:text="@string/stop_button_text"
+        android:tint="@android:color/white"
+        android:visibility="invisible" />
+
+    <Button
+        android:id="@+id/save_button"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_above="@id/start_button"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/stop_button_style"
+        android:elevation="1dp"
+        android:onClick="onClick"
+        android:text="@string/save_button_text"
+        android:tint="@android:color/white"
+        android:visibility="invisible"
+
         />
 </RelativeLayout>

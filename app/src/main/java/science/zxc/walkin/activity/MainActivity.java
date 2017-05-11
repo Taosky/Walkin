@@ -17,8 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -26,6 +25,9 @@ import java.util.Locale;
 import science.zxc.walkin.R;
 import science.zxc.walkin.core.MyWalk;
 import science.zxc.walkin.db.Record;
+
+import science.zxc.walkin.util.BitmapUtil;
+import science.zxc.walkin.util.DirectionUtil;
 
 public class MainActivity extends AppCompatActivity {
     private TextView txtDistance;//距离
@@ -51,15 +53,15 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.toolbar,menu);
+        getMenuInflater().inflate(R.menu.toolbar, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.record_menu_item:
-                Intent intent = new Intent(MainActivity.this,RecordActivity.class);
+                Intent intent = new Intent(MainActivity.this, RecordActivity.class);
                 startActivity(intent);
                 break;
             default:
@@ -71,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar)findViewById(R.id.main_toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         //初始化
         imgMap = (ImageView) findViewById(R.id.img_map);
@@ -177,30 +179,16 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                txtSteps.setText( String.format(Locale.CHINA,"步数:%d",(int) (distance / 0.67)));
-                txtDistance.setText(String.format(Locale.CHINA,"距离:%.2f米",distance));//设置距离
-                txtDirection.setText(String.format(Locale.CHINA,"方向:%s",judgeDirection(direction)));//设置方向
+                txtSteps.setText(String.format(Locale.CHINA, "步数:%d", (int) (distance / 0.67)));
+                txtDistance.setText(String.format(Locale.CHINA, "距离:%.2f米", distance));//设置距离
+                txtDirection.setText(String.format(Locale.CHINA, "方向:%s",
+                        DirectionUtil.judgeDirection(direction)));//设置方向
                 paintLine(distance, direction);
-
-
             }
         });
     }
 
-    //根据角度判断方向
-    private String judgeDirection(final float direction) {
-        String directionText;
-        if (direction < -100 && direction > -170) directionText = "南偏西 ";
-        else if (direction <= -80 && direction >= -100) directionText = "正西";
-        else if (direction < -10 && direction > -80) directionText = "北偏西";
-        else if (direction <= 10 && direction >= -10) directionText = "正北";
-        else if (direction < 80 && direction > 10) directionText = "北偏东";
-        else if (direction <= 100 && direction >= 80) directionText = "正东";
-        else if (direction < 170 && direction > 100) directionText = "南偏东";
-        else if (direction >= 170 || direction <= -170) directionText = "正南";
-        else directionText = "未知";
-        return directionText;
-    }
+
 
     //绘制起点、终点
     private void paintPoint(float X, float Y, int status) {
@@ -238,38 +226,26 @@ public class MainActivity extends AppCompatActivity {
         preDistance = distance;
     }
 
-    //保存记录
-    private void saveRecord(){
+    //保存行走记录
+    private void saveRecord() {
         Date currentTime = new Date();
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm",Locale.CHINA);
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.CHINA);
         String dateString = formatter.format(currentTime);
         Record record = new Record();
         record.setDatetime(dateString);
         record.setDistance(txtDistance.getText().toString());
         record.setSteps(txtSteps.getText().toString());
-        byte[] imageBytes = getBitmapByte(baseBitmap);
-        record.setImage(imageBytes);
+        record.setImage(BitmapUtil.getBitmapByte(baseBitmap));
         record.save();
-        Toast.makeText(MainActivity.this,"已保存本次行走记录",Toast.LENGTH_SHORT).show();
+        Toast.makeText(MainActivity.this, "已保存本次行走记录", Toast.LENGTH_SHORT).show();
     }
 
-    //图片到二进制转换
-    private byte[] getBitmapByte(Bitmap bitmap){
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
-        try {
-            out.flush();
-            out.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return out.toByteArray();
-    }
+
     @Override
     protected void onPause() {
         super.onPause();
-        if (isPainted){
-        stop();
+        if (isPainted) {
+            stop();
         }
     }
 

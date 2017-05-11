@@ -1,7 +1,6 @@
 package science.zxc.walkin.activity;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +11,8 @@ import android.widget.TextView;
 
 import science.zxc.walkin.R;
 import science.zxc.walkin.db.Record;
+
+import science.zxc.walkin.util.BitmapUtil;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -33,8 +34,8 @@ public class DetailActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        TextView detialSteps = (TextView)findViewById(R.id.detail_steps);
-        TextView detialDistances = (TextView)findViewById(R.id.detail_distances);
+        TextView detialSteps = (TextView) findViewById(R.id.detail_steps);
+        TextView detialDistances = (TextView) findViewById(R.id.detail_distances);
         ImageView detailImage = (ImageView) findViewById(R.id.detail_image);
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
@@ -42,17 +43,9 @@ public class DetailActivity extends AppCompatActivity {
         Record record = (Record) getIntent().getSerializableExtra("record_data");
         detialSteps.setText(record.getSteps());
         detialDistances.setText(record.getDistance());
-        detailImage.setImageBitmap(getBitmapFromByte(record.getImage()));
+        detailImage.setImageBitmap(BitmapUtil.getBitmapFromByte(record.getImage()));
 
     }
 
 
-    private Bitmap getBitmapFromByte(byte[] temp){
-        if(temp != null){
-            Bitmap bitmap = BitmapFactory.decodeByteArray(temp, 0, temp.length);
-            return bitmap;
-        }else{
-            return null;
-        }
-    }
 }

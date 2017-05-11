@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+    <dbname value="Walkin"/>
+    <version value="1"/>
+
+    <list>
+        <mapping class="science.zxc.walkin.db.Record"/>
+    </list>
+</litepal>

@@ -33,7 +33,6 @@
                 android:layout_weight="1"
                 android:background="#BBDEFB"
                 android:enabled="false"
-                android:text="@string/default_steps_button_text"
                 android:textColor="#212121" />
 
             <Button
@@ -43,7 +42,6 @@
                 android:layout_weight="1"
                 android:background="#BBDEFB"
                 android:enabled="false"
-                android:text="@string/default_distances_button_text"
                 android:textColor="#212121" />
 
             <Button
@@ -53,7 +51,6 @@
                 android:layout_weight="1"
                 android:background="#BBDEFB"
                 android:enabled="false"
-                android:text="@string/default_direction_button_text"
                 android:textColor="#212121" />
         </LinearLayout>
 
@@ -65,8 +62,9 @@
             <ImageView
                 android:id="@+id/img_map"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="#E9E5DC" />
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:background="@drawable/bg_map" />
 
         </LinearLayout>
 

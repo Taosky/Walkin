@@ -8,11 +8,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
+
 
 import org.litepal.crud.DataSupport;
 
@@ -65,7 +63,7 @@ public class RecordActivity extends AppCompatActivity {
         });
 
     }
-    static class DividerItemDecoration extends RecyclerView.ItemDecoration {
+    private static class DividerItemDecoration extends RecyclerView.ItemDecoration {
 
         @Override
         public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {

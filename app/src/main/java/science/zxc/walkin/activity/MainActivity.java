@@ -17,7 +17,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -41,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
     private Bitmap baseBitmap;//基础位图用于绘制
     private boolean isStopped = true;// 用以判断是否已停止
     private boolean isPainted = false; //判断是否选择起点
-    private float direction;//移动方向(角度)
-    private float distance;//移动距离
     private float startX;//画笔起点
     private float startY;
     private final int BEGIN = 0;
@@ -83,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
         txtDistance = (TextView) findViewById(R.id.distances);
         txtDirection = (TextView) findViewById(R.id.direction);
         txtSteps = (TextView) findViewById(R.id.steps);
+        initUI();//UI初始化
         myWalk = new MyWalk();
         //监听触屏事件
         imgMap.setOnTouchListener(onTouch);
@@ -116,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    //imaageView触摸事件
+    //imageView触摸事件
     private View.OnTouchListener onTouch = new View.OnTouchListener() {
         @Override
         public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -133,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
                     paintPoint(startX, startY, BEGIN);//绘制起点
                     Toast.makeText(MainActivity.this, "起点已选", Toast.LENGTH_SHORT).show();
                     isPainted = true;
+                    initUI();//选择起点后重置UI的信息
+                    btnSave.setVisibility(View.INVISIBLE);//选择起点后保存按钮不可见
                 }
 
             }
@@ -151,11 +151,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 while (!isStopped) {
-                    distance = myWalk.getDistance();
-                    direction = myWalk.getDirection();
-                    updateInfo(distance, direction);//更新信息
+                    updateUI(myWalk.getDistance(),myWalk.getDirection());//更新界面
                     try {
-                        Thread.sleep(500);//每500ms更新
+                        Thread.sleep(200);//每200ms获取一次
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -175,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //更新信息
-    private void updateInfo(final float distance, final float direction) {
+    private void updateUI(final float distance, final float direction) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -188,8 +186,13 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    //重置UI信息
+    private void initUI(){
+        txtSteps.setText("步数:0");
+        txtDistance.setText("距离:0米");//设置距离
+        txtDirection.setText("方向:暂无");//设置方向
 
-
+    }
     //绘制起点、终点
     private void paintPoint(float X, float Y, int status) {
         Paint paint = new Paint();
@@ -211,7 +214,7 @@ public class MainActivity extends AppCompatActivity {
         }
         //通过相对距离计算停止点的坐标
         float reDistance = distance - preDistance;
-        reDistance *= 8;
+        reDistance *= 15;// 相对距离转换成坐标距离
         float stopX = (float) (startX + reDistance * Math.cos((direction - 90) * Math.PI / 180));
         float stopY = (float) (startY + reDistance * Math.sin((direction - 90) * Math.PI / 180));
         //绘制
@@ -239,7 +242,6 @@ public class MainActivity extends AppCompatActivity {
         record.save();
         Toast.makeText(MainActivity.this, "已保存本次行走记录", Toast.LENGTH_SHORT).show();
     }
-
 
     @Override
     protected void onPause() {

@@ -63,7 +63,7 @@ public class MyWalk {
 
     public void stop() {
         sensorManager.unregisterListener(mySensorListener);
-        mySensorListener.reset();
+        //
         distance = 0;
     }
 

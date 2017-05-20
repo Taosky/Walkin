@@ -6,7 +6,7 @@ package science.zxc.walkin.core;
  * MAIL: t@firefoxcn.net
  * DESC: 更新数据的接口
  */
-public interface MyUpdateListener {
+interface MyUpdateListener {
     void updateDistance();
     void updateDirection(float degree);
 }

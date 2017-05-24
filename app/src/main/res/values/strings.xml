@@ -8,5 +8,6 @@
     <string name="default_steps_button_text">步数:0</string>
     <string name="record_menu_item_text">历史记录</string>
     <string name="noRecord_text">没有更多了~</string>
+    <string name="backgroundmap">BackGroundMap</string>
 
 </resources>

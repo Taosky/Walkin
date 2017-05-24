@@ -57,8 +57,8 @@ public class MyWalk {
     public void start() {
         //注册监听器
         distance = 0;
-        sensorManager.registerListener(mySensorListener, magneticSensor, SensorManager.SENSOR_DELAY_GAME);
-        sensorManager.registerListener(mySensorListener, accelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
+        sensorManager.registerListener(mySensorListener, magneticSensor, SensorManager.SENSOR_DELAY_UI);
+        sensorManager.registerListener(mySensorListener, accelerometerSensor, SensorManager.SENSOR_DELAY_UI);
     }
 
     public void stop() {

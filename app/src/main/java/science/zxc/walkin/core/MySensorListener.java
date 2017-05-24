@@ -89,7 +89,7 @@ class MySensorListener implements SensorEventListener {
             if (detectorPeak(values, lastAcceleration)) {
                 long timeOfLastPeak = timeOfThisPeak;
                 long timeOfNow = System.currentTimeMillis(); //当前时间
-                if (timeOfNow - timeOfLastPeak >= 400
+                if (timeOfNow - timeOfLastPeak >= 200
                         && (peakOfWave - valleyOfWave >= threadThreshold) && (timeOfNow - timeOfLastPeak) <= 2000) {
                     timeOfThisPeak = timeOfNow;
                     //视为一步，更新步数

@@ -17,7 +17,7 @@ class MySensorListener implements SensorEventListener {
     private float lastAcceleration = 0; //上次加速度
     private boolean isDirectionUp = false; //是否为上升状态
     private int continueUpCount = 0; //持续上升次数
-    private  int continueUpFormerCount = 0; //上一个点的持续上升次数
+    private int continueUpFormerCount = 0; //上一个点的持续上升次数
     private float peakOfWave = 0; //波峰值
     private float valleyOfWave = 0; //波谷值
     private long timeOfThisPeak = 0; //此次波峰的时间
@@ -29,9 +29,9 @@ class MySensorListener implements SensorEventListener {
     private float[] accelerometerValues = new float[3];
     private float[] magneticValues = new float[3];
 
-    private MyUpdateListener myUpdateListener ;
+    private MyUpdateListener myUpdateListener;
 
-    void setUpdateListener(MyUpdateListener updateListener){
+    void setUpdateListener(MyUpdateListener updateListener) {
         myUpdateListener = updateListener;
     }
 
@@ -58,10 +58,10 @@ class MySensorListener implements SensorEventListener {
     }
 
     //计算方向角度
-    private void calcDirection(float[] accelerometerValues,float[] magneticValues){
+    private void calcDirection(float[] accelerometerValues, float[] magneticValues) {
         float[] R = new float[9];
         float[] values = new float[3];
-        SensorManager.getRotationMatrix(R,null,accelerometerValues,magneticValues);
+        SensorManager.getRotationMatrix(R, null, accelerometerValues, magneticValues);
         SensorManager.getOrientation(R, values);
         float degree = (float) Math.toDegrees(values[0]);
         myUpdateListener.updateDirection(degree);//更新方向数据
@@ -77,6 +77,7 @@ class MySensorListener implements SensorEventListener {
                 + Math.pow(accelerometerValues[1], 2) + Math.pow(accelerometerValues[2], 2));
         detectorNewStep(acceleration);
     }
+
     /**
      * 检测步子，并开始计步
      * 如果检测到了波峰，并且符合时间差以及阈值的条件，则判定为1步
@@ -90,7 +91,8 @@ class MySensorListener implements SensorEventListener {
                 long timeOfLastPeak = timeOfThisPeak;
                 long timeOfNow = System.currentTimeMillis(); //当前时间
                 if (timeOfNow - timeOfLastPeak >= 200
-                        && (peakOfWave - valleyOfWave >= threadThreshold) && (timeOfNow - timeOfLastPeak) <= 2000) {
+                        && (peakOfWave - valleyOfWave >= threadThreshold) &&
+                        (timeOfNow - timeOfLastPeak) <= 2000) {
                     timeOfThisPeak = timeOfNow;
                     //视为一步，更新步数
                     myUpdateListener.updateDistance();
@@ -109,14 +111,15 @@ class MySensorListener implements SensorEventListener {
     /**
      * 检测波峰
      * 以下四个条件判断为波峰：
-     *  1.目前点为下降的趋势：isDirectionUp为false
-     *  2.之前的点为上升的趋势：lastStatus为true
-     *  3.到波峰为止，持续上升大于等于2次
-     *     - 这是因为：加速度传感器采集的频率比较高，一般大于30Hz，2次还算少的了
-     *  4.波峰值大于1.2g,小于2g
+     * 1.目前点为下降的趋势：isDirectionUp为false
+     * 2.之前的点为上升的趋势：lastStatus为true
+     * 3.到波峰为止，持续上升大于等于2次
+     * - 这是因为：加速度传感器采集的频率比较高，一般大于30Hz，2次还算少的了
+     * 4.波峰值大于1.2g,小于2g
      * 记录波谷值
      * 1.观察波形图，可以发现在出现步子的地方，波谷的下一个就是波峰，有比较明显的特征以及差值
      * 2.所以要记录每次的波谷值，为了和下次的波峰做对比
+     *
      * @param newValue 本次的加速度
      * @param oldValue 上次的加速度
      */
@@ -133,7 +136,8 @@ class MySensorListener implements SensorEventListener {
         float minValue = 11f;
         float maxValue = 19.6f;
         if (!isDirectionUp && lastStatus
-                && (continueUpFormerCount >= 2 && (oldValue >= minValue && oldValue < maxValue))) {
+                && (continueUpFormerCount >= 2 &&
+                (oldValue >= minValue && oldValue < maxValue))) {
             peakOfWave = oldValue;
             return true;
         } else if (!lastStatus && isDirectionUp) {
@@ -143,6 +147,7 @@ class MySensorListener implements SensorEventListener {
             return false;
         }
     }
+
     /**
      * 阈值的计算
      * 1.通过波峰波谷的差值计算阈值
@@ -161,6 +166,7 @@ class MySensorListener implements SensorEventListener {
         }
         return tempThread;
     }
+
     /**
      * 梯度化阈值
      * 1.计算数组的均值
@@ -191,8 +197,6 @@ class MySensorListener implements SensorEventListener {
         }
         return ave;
     }
-
-
 
 
 }

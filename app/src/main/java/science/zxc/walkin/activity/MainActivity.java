@@ -1,6 +1,5 @@
 package science.zxc.walkin.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -10,10 +9,8 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -47,8 +44,8 @@ public class MainActivity extends AppCompatActivity {
     private Canvas canvas;//画布
     private Canvas arrowCanvas;//箭头的画布
     private Bitmap baseBitmap;//基础位图用于绘制
-    private Bitmap upBitmap;//用于绘制箭头
-    private ArrowView arrowView ;
+    private Bitmap arrowBitmap;//用于绘制箭头
+    private Arrow arrow ;
     private boolean isStopped = true;// 用以判断是否已停止
     private boolean isPainted = false; //判断是否选择起点
     private float startX;//画笔起点
@@ -92,11 +89,14 @@ public class MainActivity extends AppCompatActivity {
         txtDistance = (TextView) findViewById(R.id.distances);
         txtDirection = (TextView) findViewById(R.id.direction);
         txtSteps = (TextView) findViewById(R.id.steps);
-        initUI();//UI初始化
-        arrowView=new ArrowView(this);
-        arrowView.setBitmap(BitmapFactory.decodeResource(getResources(), R.drawable.arrow));
+        //UI初始化
+        initUI();
+        //初始化arrow
+        arrow=new Arrow(BitmapFactory.decodeResource(getResources(), R.drawable.arrow));
+        //初始化mywalk
         myWalk = new MyWalk();
-        imgMap.setOnTouchListener(onTouch);//监听触屏事件
+        //监听触屏事件
+        imgMap.setOnTouchListener(onTouch);
     }
 
     /*按钮点击事件*/
@@ -137,9 +137,9 @@ public class MainActivity extends AppCompatActivity {
                         imgMap.getHeight(), Bitmap.Config.ARGB_8888);
                 canvas = new Canvas(baseBitmap);
 
-                upBitmap = Bitmap.createBitmap(imgArrow.getWidth(),
+                arrowBitmap = Bitmap.createBitmap(imgArrow.getWidth(),
                         imgArrow.getHeight(), Bitmap.Config.ARGB_8888);
-                arrowCanvas= new Canvas(upBitmap);
+                arrowCanvas= new Canvas(arrowBitmap);
 
                 if (motionEvent.getAction() == MotionEvent.ACTION_DOWN && isStopped) {
                     //用户按下动作
@@ -159,13 +159,13 @@ public class MainActivity extends AppCompatActivity {
 
     /*开始行走*/
     private void start() {
-        btnStart.setVisibility(View.INVISIBLE);//开始按钮不可见
-        btnStop.setVisibility(View.VISIBLE);
+        btnStart.setVisibility(View.INVISIBLE);//隐藏开始按钮
+        btnStop.setVisibility(View.VISIBLE);//显示停止按钮
         imgArrow.setVisibility(View.VISIBLE);//显示箭头
         preDistance = 0;
         myWalk.start();
         isStopped = false;
-        new Thread(new Runnable() {
+        new Thread( new Runnable() {
             @Override
             public void run() {
                 while (!isStopped) {
@@ -196,9 +196,9 @@ public class MainActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                arrowView.setValues(startX,startY,direction);
-                arrowView.draw(arrowCanvas);
-                imgArrow.setImageBitmap(upBitmap);
+                arrow.setValues(startX,startY,direction);
+                arrow.draw(arrowCanvas);
+                imgArrow.setImageBitmap(arrowBitmap);
                 txtSteps.setText(String.format(Locale.CHINA, "步数:%d", (int) (distance / 0.67)));
                 txtDistance.setText(String.format(Locale.CHINA, "距离:%.2f米", distance));//设置距离
                 txtDirection.setText(String.format(Locale.CHINA, "方向:%s",
@@ -231,17 +231,14 @@ public class MainActivity extends AppCompatActivity {
 
     /*绘制路径(连线)*/
     private void paintLine(float distance, float direction) {
-       // imgArrow.layout((int) (startX-60), (int) (startY-60), imgArrow.getRight(),imgArrow.getBottom());
-       // Log.d("arrow",String.format("img:left:%s,top:%s,right:%s,bottom:%s",imgArrow.getX(),imgArrow.getY(),imgArrow.getRight(),imgArrow.getBottom()));
         //通过相对距离
         float reDistance = distance - preDistance;
         //没有移动直接返回
         if (reDistance != 0) {
-           // Log.d("MainActivity", String.valueOf(reDistance));
             //计算停止点的坐标
             reDistance *= 15;// 相对距离转换成坐标距离
             float x = (float) (direction * Math.PI / 180);
-            float stopX = (float) (startX + reDistance * Math.sin(x));
+            float stopX =  (float) (startX + reDistance * Math.sin(x));
             float stopY = (float) (startY -reDistance * Math.cos(x));
             //Log.d("MainActivity","stop:"+String.valueOf(stopX)+","+String.valueOf(stopY));
             //绘制
@@ -303,52 +300,36 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-   private class ArrowView extends View{
-        private Bitmap arrowBitmap;
+ //指针内部类,用于在canvas上绘制变动的指针
+   private class Arrow {
+        private Bitmap mBitmap;
         private float mX = 0;
         private float mY = 0;
         private float mDegree = 0;
         private Paint paint;
 
-        public void setBitmap(Bitmap bitmap){
-            arrowBitmap = bitmap;
-        }
-
-        public void setValues(float x, float y, float degree){
+        void setValues(float x, float y, float degree){
             mX = x;
             mY = y;
             mDegree =degree;
         }
 
-
-        public ArrowView(Context context) {
-            super(context);
-           // setZOrderOnTop(true);
-          //  getHolder().setFormat(PixelFormat.TRANSLUCENT);
+        Arrow(Bitmap bitmap) {
+            mBitmap = bitmap;
             paint = new Paint();
         }
 
-        public ArrowView(Context context, @Nullable AttributeSet attrs) {
-            super(context, attrs);
-        }
-
-        public ArrowView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-            super(context, attrs, defStyleAttr);
-        }
-
-        @Override
-        public void draw(Canvas canvas) {
+        void draw(Canvas canvas) {
             canvas.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR);//清空
             // 定义矩阵对象
             Matrix matrix = new Matrix();
             matrix.setScale(0.3f,0.3f);
-            int offsetX = arrowBitmap.getWidth() *3/ 20;
-            int offsetY = arrowBitmap.getHeight() *3/ 20;
+            int offsetX = mBitmap.getWidth() *3/ 20;
+            int offsetY = mBitmap.getHeight() *3/ 20;
             matrix.postTranslate(-offsetX, -offsetY);
             matrix.postRotate(mDegree);
             matrix.postTranslate(mX , mY );
-            canvas.drawBitmap(arrowBitmap, matrix, paint);
+            canvas.drawBitmap(mBitmap, matrix, paint);
         }
     }
 }

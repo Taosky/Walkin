@@ -1,6 +1,5 @@
 package science.zxc.walkin.db;
 
-import android.graphics.Bitmap;
 
 import org.litepal.crud.DataSupport;
 
@@ -44,7 +43,6 @@ public class Record extends DataSupport implements Serializable {
         this.distance = distance;
     }
 
-
     public int getId() {
         return id;
     }
@@ -60,7 +58,6 @@ public class Record extends DataSupport implements Serializable {
     public void setImage(byte[] image) {
         this.image = image;
     }
-
 
 
 }
